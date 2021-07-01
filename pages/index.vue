@@ -7,8 +7,8 @@
         :key="list.listId"
       >
         <div class="d-flex flex-row justify-space-between">
-          <div v-for="(title, cardId) in list.list" :key="cardId">
-            {{ title }}
+          <div>
+            {{ list.list.title }}
           </div>
           <v-icon
             small
@@ -20,7 +20,7 @@
 
         <!--                 display cards              -->
         <v-card
-          v-for="card in list.cards"
+          v-for="card in list.list.cards"
           :draggable="true"
           @dragover.prevent
           @dragstart="drag($event, card)"
@@ -64,14 +64,14 @@
                 <v-col cols="12">
                   <v-text-field
                     label="Stuff to do"
-                    v-model="cards.title"
+                    v-model="card.title"
                     rounded
                     filled
                     required
                   ></v-text-field>
                   <v-text-field
                     label="Description"
-                    v-model="cards.description"
+                    v-model="card.description"
                     outlined
                     required
                   ></v-text-field>
@@ -187,7 +187,7 @@ export default {
       list: {
         title: ""
       },
-      cards: {
+      card: {
         cardId: "",
         title: "",
         description: ""
@@ -213,15 +213,16 @@ export default {
         if (this.DATA.lists) {
           DATA.lists.push({
             listId: this.listId,
-            list: { title: this.list.title },
-            cards: this.list.cards
+            list: { title: this.list.title, cards: this.list.cards }
+            //cards: this.list.cards
           });
         } else {
           this.DATA.lists = [];
           DATA.lists.push({
             listId: this.listId,
-            list: { title: this.list.title },
-            cards: this.list.cards
+            list: { title: this.list.title, cards: this.list.cards }
+
+            //            cards: this.list.cards
           });
         }
 
@@ -247,12 +248,13 @@ export default {
 
     async createCard() {
       let that = this;
-      console.log(this.cards);
+      console.log(this.list.cards);
       that.dialogCard = false;
 
-      if (that.cards.title !== "") {
-        that.cards.cardId = uuidv4();
-        that.cards.listId = that.listId;
+      if (that.card.title !== "") {
+        that.card.cardId = uuidv4();
+        that.card.listId = that.listId;
+
         if (that.DATA.lists) {
           let index = -1;
           let count = 0;
@@ -263,22 +265,22 @@ export default {
             count++;
           }
           if (index !== -1) {
-            if (that.DATA.lists[index].cards) {
-              console.log("*******", that.cards);
-              that.DATA.lists[index].cards.push(that.cards);
+            if (that.DATA.lists[index].list.cards) {
+              console.log("*******", that.card);
+              that.DATA.lists[index].list.cards.push(that.card);
 
               console.log(
                 "BYEEEEEEEEEEEEEEEee",
                 JSON.stringify(that.DATA.lists)
               );
             } else {
-              that.DATA.lists[index].cards = [];
-              that.DATA.lists[index].cards.push(that.cards);
+              that.DATA.lists[index].list.cards = [];
+              that.DATA.lists[index].list.cards.push(that.card);
             }
           }
         }
       }
-      that.cards = [];
+      that.card = [];
       that.listId = "";
     },
 
@@ -286,6 +288,7 @@ export default {
       this.dialogEditCard = true;
       this.currentCard = card;
     },
+
     async deleteCard() {
       let that = this;
       that.dialogEditCard = false;
@@ -299,7 +302,7 @@ export default {
       for (const list of that.DATA.lists) {
         if (that.currentCard.listId === list.listId) {
           //correct list, now find card
-          for (const card of list.cards) {
+          for (const card of list.list.cards) {
             if (card.cardId === that.currentCard.cardId) {
               index.list = i;
               index.card = j;
@@ -312,22 +315,22 @@ export default {
       //console.log("index of card: " + index.card);
 
       if (index.list > -1) {
-        that.DATA.lists[index.list].cards.splice(index.card, 1);
+        that.DATA.lists[index.list].list.cards.splice(index.card, 1);
       }
     },
 
     async updateCard() {
       this.dialogEditCard = false;
-      for (const list of this.DATA.lists) {
-        if (this.currentCard.listId === list.id) {
-          //correct list, now find card
-          for (const card of list.cards) {
-            if (card.id === this.currentCard.id) {
-              card = this.currentCard;
-            }
-          }
-        }
-      }
+      // for (const list of this.DATA.lists) {
+      //   if (this.currentCard.listId === list.id) {
+      //     //correct list, now find card
+      //     for (const card of list.list.cards) {
+      //       if (card.id === this.currentCard.id) {
+      //         card = this.currentCard;
+      //       }
+      //     }
+      //   }
+      // }
     }
   }
 };
