@@ -7,9 +7,7 @@
         :key="list.listId"
       >
         <div class="d-flex flex-row justify-space-between">
-          <div>
-            {{ list.list.title }}
-          </div>
+          <div>{{ list.list.title }} {{ list.list.cards.length }}</div>
           <v-icon
             small
             @click="deleteList(list.listId)"
@@ -197,8 +195,7 @@ export default {
       cardDraggedListId: "",
       dialog: false,
       dialogCard: false,
-      dialogEditCard: false,
-      drawer: false
+      dialogEditCard: false
     };
   },
 
