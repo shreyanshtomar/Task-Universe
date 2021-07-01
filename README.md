@@ -1,4 +1,5 @@
-# task-universe
+# Task-Universe
+A notion clone
 
 ## Build Setup
 
