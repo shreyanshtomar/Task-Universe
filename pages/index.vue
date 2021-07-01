@@ -1,5 +1,15 @@
 <template>
   <div class="d-flex flex-column board">
+    <div class="title-header">
+      <div class="image-container">
+        <img src="../assets/task.svg" alt="icon" class="task-icon" />
+      </div>
+      <div class="task-list">
+        <span>Task List</span>
+      </div>
+    </div>
+    <hr />
+
     <div class="d-flex flex-row pr-6 pt-3">
       <div
         v-for="list in DATA.lists"
@@ -7,13 +17,14 @@
         :key="list.listId"
       >
         <div class="d-flex flex-row justify-space-between">
-          <div>{{ list.list.title }} {{ list.list.cards.length }}</div>
+          <div>{{ list.list.title }} : {{ list.list.cards.length }}</div>
           <v-icon
             small
             @click="deleteList(list.listId)"
             style="margin-right: 10px, margin-left:30px"
-            >mdi-delete-empty-outline</v-icon
           >
+            mdi-delete-empty-outline
+          </v-icon>
         </div>
 
         <!--                 display cards              -->
@@ -195,7 +206,8 @@ export default {
       cardDraggedListId: "",
       dialog: false,
       dialogCard: false,
-      dialogEditCard: false
+      dialogEditCard: false,
+      drawer: false
     };
   },
 
@@ -211,15 +223,12 @@ export default {
           DATA.lists.push({
             listId: this.listId,
             list: { title: this.list.title, cards: this.list.cards }
-            //cards: this.list.cards
           });
         } else {
           this.DATA.lists = [];
           DATA.lists.push({
             listId: this.listId,
             list: { title: this.list.title, cards: this.list.cards }
-
-            //            cards: this.list.cards
           });
         }
 
@@ -263,13 +272,7 @@ export default {
           }
           if (index !== -1) {
             if (that.DATA.lists[index].list.cards) {
-              console.log("*******", that.card);
               that.DATA.lists[index].list.cards.push(that.card);
-
-              console.log(
-                "BYEEEEEEEEEEEEEEEee",
-                JSON.stringify(that.DATA.lists)
-              );
             } else {
               that.DATA.lists[index].list.cards = [];
               that.DATA.lists[index].list.cards.push(that.card);
@@ -285,7 +288,6 @@ export default {
       this.dialogEditCard = true;
       this.currentCard = card;
     },
-
     async deleteCard() {
       let that = this;
       that.dialogEditCard = false;
@@ -309,7 +311,6 @@ export default {
         }
         i++;
       }
-      //console.log("index of card: " + index.card);
 
       if (index.list > -1) {
         that.DATA.lists[index.list].list.cards.splice(index.card, 1);
@@ -334,9 +335,45 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.board {
-  padding-left: 45px;
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&display=swap");
 
+.board {
+  font-family: "Quicksand", sans-serif;
+  padding-left: 150px;
+  width: 100%;
+
+  hr {
+    border: none;
+    border-top: 3px double rgba(49, 49, 49, 0.336);
+    color: rgba(51, 51, 51, 0.664);
+    overflow: visible;
+    text-align: center;
+    height: 5px;
+    width: 90%;
+  }
+
+  hr:after {
+    background: #fff;
+    padding: 0 4px;
+    position: relative;
+    top: -13px;
+  }
+  .title-header {
+    display: flex;
+    flex-direction: row;
+
+    .image-container {
+      height: 35px;
+      width: 35px;
+      margin: 55px 15px;
+      margin-left: 0px;
+    }
+    .task-list {
+      align-self: center;
+      font-size: 46px;
+      font-weight: 500;
+    }
+  }
   .list {
     width: 250px;
 
