@@ -187,13 +187,11 @@ export default {
       list: {
         title: ""
       },
-      cards: [
-        {
-          cardId: "",
-          title: "",
-          description: ""
-        }
-      ],
+      cards: {
+        cardId: "",
+        title: "",
+        description: ""
+      },
       currentCard: {},
       cardDraggedId: "",
       cardDraggedListId: "",
@@ -211,19 +209,19 @@ export default {
 
       if (this.list.title !== "") {
         this.listId = uuidv4();
-        this.cards = [];
+        this.list.cards = [];
         if (this.DATA.lists) {
           DATA.lists.push({
             listId: this.listId,
             list: { title: this.list.title },
-            cards: this.cards
+            cards: this.list.cards
           });
         } else {
           this.DATA.lists = [];
           DATA.lists.push({
             listId: this.listId,
             list: { title: this.list.title },
-            cards: this.cards
+            cards: this.list.cards
           });
         }
 
@@ -248,36 +246,40 @@ export default {
     },
 
     async createCard() {
+      let that = this;
       console.log(this.cards);
-      this.dialogCard = false;
+      that.dialogCard = false;
 
-      if (this.cards.title !== "") {
-        this.cards.cardId = uuidv4();
-        this.cards.listId = this.listId;
-
-        if (this.DATA.lists) {
+      if (that.cards.title !== "") {
+        that.cards.cardId = uuidv4();
+        that.cards.listId = that.listId;
+        if (that.DATA.lists) {
           let index = -1;
           let count = 0;
-          for (const list of this.DATA.lists) {
-            if (list.listId === this.listId) {
+          for (const list of that.DATA.lists) {
+            if (list.listId === that.listId) {
               index = count;
             }
             count++;
           }
           if (index !== -1) {
-            if (this.DATA.lists[index].cards) {
-              console.log("BYEEEEEEEEEEEEEEEee", index);
+            if (that.DATA.lists[index].cards) {
+              console.log("*******", that.cards);
+              that.DATA.lists[index].cards.push(that.cards);
 
-              this.DATA.lists[index].cards.push(this.cards);
+              console.log(
+                "BYEEEEEEEEEEEEEEEee",
+                JSON.stringify(that.DATA.lists)
+              );
             } else {
-              this.DATA.lists[index].cards = [];
-              this.DATA.lists[index].cards.push(this.cards);
+              that.DATA.lists[index].cards = [];
+              that.DATA.lists[index].cards.push(that.cards);
             }
           }
         }
       }
-      this.cards = [];
-      this.listId = "";
+      that.cards = [];
+      that.listId = "";
     },
 
     editCard(card) {
@@ -293,6 +295,7 @@ export default {
         list: -1,
         card: -1
       };
+      console.log("cardcurr: ", that.currentCard);
       for (const list of that.DATA.lists) {
         if (that.currentCard.listId === list.listId) {
           //correct list, now find card
@@ -306,6 +309,8 @@ export default {
         }
         i++;
       }
+      //console.log("index of card: " + index.card);
+
       if (index.list > -1) {
         that.DATA.lists[index.list].cards.splice(index.card, 1);
       }
