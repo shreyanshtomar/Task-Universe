@@ -1,13 +1,11 @@
 <template>
   <v-app>
     <v-container>
-      <v-app-bar absolute color="#343a40" elevate-on-scroll>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
+      <v-app-bar absolute color="#212529" elevate-on-scroll>
         <v-toolbar-title class="toolbar">
-          <!-- <div class="toolbar-icon">
-            <img :src="require('../assets/task.svg')" alt="task-icon" />
-          </div> -->
+          <v-icon style="color: white; margin-right: 10px" large>
+            mdi-book-open-outline
+          </v-icon>
           <div class="toolbar-title">
             Task Universe
           </div>
@@ -33,37 +31,20 @@
 .toolbar {
   font-family: "Quicksand", sans-serif;
   font-weight: 500;
-  color: white;
   display: flex;
   .toolbar-icon {
     width: 20px;
     padding: 2px;
     margin-right: 10px;
   }
+  .toolbar-title {
+    padding-top: 3px;
+    color: white;
+  }
 }
 
 .v-main {
-  //background-color: #f1faee;
-  background: hsla(212, 35%, 58%, 1);
-
-  background: linear-gradient(
-    90deg,
-    hsla(212, 35%, 58%, 1) 0%,
-    hsla(218, 32%, 80%, 1) 100%
-  );
-
-  background: -moz-linear-gradient(
-    90deg,
-    hsla(212, 35%, 58%, 1) 0%,
-    hsla(218, 32%, 80%, 1) 100%
-  );
-
-  background: -webkit-linear-gradient(
-    90deg,
-    hsla(212, 35%, 58%, 1) 0%,
-    hsla(218, 32%, 80%, 1) 100%
-  );
-
+  background-color: #adb5bd;
   overflow: scroll;
   margin-top: 25px;
 }

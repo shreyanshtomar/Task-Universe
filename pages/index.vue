@@ -1,16 +1,15 @@
 <template>
   <div class="d-flex flex-column board">
-    <div class="title-header">
-      <div class="image-container">
-        <img src="../assets/task.svg" alt="icon" class="task-icon" />
+    <TitleHeader />
+    <div class="d-flex flex-row pr-6 pt-3" style="min-height: 800px;">
+      <div class="choose-img">
+        <img
+          src="../assets/choose.svg"
+          alt="icon"
+          class="task-icon"
+          style="opacity: 0.5; height:350px;"
+        />
       </div>
-      <div class="task-list">
-        <span>Task List</span>
-      </div>
-    </div>
-    <hr />
-
-    <div class="d-flex flex-row pr-6 pt-3">
       <div
         v-for="list in DATA.lists"
         class="d-flex flex-column pt-3 mr-6 list"
@@ -19,16 +18,36 @@
         :key="list.listId"
       >
         <div class="d-flex flex-row justify-space-between">
-          <div style="font-weight: 500">
-            {{ list.list.title }} : {{ list.list.cards.length }}
+          <div style="font-weight: 500" class="list-head">
+            <div class="list-title">
+              {{ list.list.title }}
+            </div>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <div v-bind="attrs" v-on="on">
+                  <div class="total-card" style="opacity: 0.5;">
+                    : {{ list.list.cards.length }}
+                  </div>
+                </div>
+              </template>
+              <span>Number of Cards</span>
+            </v-tooltip>
           </div>
-          <v-icon
-            small
-            @click="deleteList(list.listId)"
-            style="margin-right: 10px, margin-left:30px"
-          >
-            mdi-delete-empty-outline
-          </v-icon>
+
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon
+                small
+                @click="deleteList(list.listId)"
+                style="margin-right: 10px, margin-left:30px"
+                v-bind="attrs"
+                v-on="on"
+              >
+                mdi-delete-empty-outline
+              </v-icon>
+            </template>
+            <span>Delete Status</span>
+          </v-tooltip>
         </div>
 
         <!--                 display cards              -->
@@ -55,9 +74,9 @@
               dialogCard = true;
               listId = list.listId;
             "
-            class="mt-auto"
+            class="mt-auto btn-new"
             style="
-              width: 250px;
+              width: 90px;
               display: flex;
               flex-direction: column;
               align-items: flex-start;
@@ -79,8 +98,7 @@
                   <v-text-field
                     label="Stuff to do"
                     v-model="card.title"
-                    rounded
-                    filled
+                    outlined
                     required
                   ></v-text-field>
                   <v-text-field
@@ -111,12 +129,12 @@
           depressed
           @click="dialog = true"
           class="create-list"
-          elevation="0"
-          style="opacity: 0.6"
-          >Create new Status !</v-btn
+          elevation="4"
+          style="background-color: #495057; color: white;"
+          >+ New</v-btn
         >
         <v-dialog v-model="dialog" persistent max-width="600px">
-          <v-card elevation="0">
+          <v-card elevation="2">
             <v-card-title>
               <span class="headline">What's Your Status?</span>
             </v-card-title>
@@ -329,17 +347,8 @@ export default {
 
     async updateCard() {
       this.dialogEditCard = false;
-      // for (const list of this.DATA.lists) {
-      //   if (this.currentCard.listId === list.id) {
-      //     //correct list, now find card
-      //     for (const card of list.list.cards) {
-      //       if (card.id === this.currentCard.id) {
-      //         card = this.currentCard;
-      //       }
-      //     }
-      //   }
-      // }
     },
+
     async updateCardList(newlistId) {
       let that = this;
       let tempListIndex = -1;
@@ -413,49 +422,39 @@ export default {
   padding-left: 150px;
   width: 100%;
 
-  hr {
-    border: none;
-    border-top: 3px double rgba(49, 49, 49, 0.336);
-    color: rgba(51, 51, 51, 0.664);
-    overflow: visible;
-    text-align: center;
-    height: 5px;
-    width: 90%;
+  .create-list {
+    background: none;
   }
 
-  hr:after {
-    background: #fff;
-    padding: 0 4px;
-    position: relative;
-    top: -13px;
-  }
-  .title-header {
-    display: flex;
-    flex-direction: row;
-
-    .image-container {
-      height: 35px;
-      width: 35px;
-      margin: 55px 15px;
-      margin-left: 0px;
-    }
-    .task-list {
-      align-self: center;
-      font-size: 46px;
-      font-weight: 500;
-    }
-  }
   .list {
     width: 250px;
+
     .v-card__text {
       padding: 12px;
+    }
+
+    .list-head {
+      display: flex;
+
+      .list-title {
+        border-radius: 10px;
+        padding: 0px 2px;
+      }
     }
   }
   .new-task {
     display: flex;
     flex-direction: row;
     padding-left: 0;
-    opacity: 0.5;
+
+    .btn-new {
+      opacity: 0.5;
+      background: none;
+    }
+
+    .btn-new:hover {
+      background-color: #6c757d;
+    }
   }
 }
 </style>
