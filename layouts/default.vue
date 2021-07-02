@@ -43,7 +43,27 @@
 }
 
 .v-main {
-  background-color: #f1faee;
+  //background-color: #f1faee;
+  background: hsla(212, 35%, 58%, 1);
+
+  background: linear-gradient(
+    90deg,
+    hsla(212, 35%, 58%, 1) 0%,
+    hsla(218, 32%, 80%, 1) 100%
+  );
+
+  background: -moz-linear-gradient(
+    90deg,
+    hsla(212, 35%, 58%, 1) 0%,
+    hsla(218, 32%, 80%, 1) 100%
+  );
+
+  background: -webkit-linear-gradient(
+    90deg,
+    hsla(212, 35%, 58%, 1) 0%,
+    hsla(218, 32%, 80%, 1) 100%
+  );
+
   overflow: scroll;
   margin-top: 25px;
 }

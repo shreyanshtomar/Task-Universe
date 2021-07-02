@@ -31,14 +31,14 @@ const DATA = {
         cards: [
           {
             "listId": "2",
-            "cardId": "1",
+            "cardId": "3",
             "title": "Talking",
             "description": "Talking to a friend"
           },
 
           {
             "listId": "2",
-            "cardId": "2",
+            "cardId": "4",
             "title": "Walkig my cat",
             "description": "It is a long walk"
           },
@@ -55,14 +55,14 @@ const DATA = {
         cards: [
           {
             "listId": "3",
-            "cardId": "1",
+            "cardId": "5",
             "title": "Slept",
             "description": "It was a nice sleep"
           },
 
           {
             "listId": "3",
-            "cardId": "2",
+            "cardId": "6",
             "title": "Played Football",
             "description": "Really enjoyed playing it after a long time"
           },

@@ -14,10 +14,14 @@
       <div
         v-for="list in DATA.lists"
         class="d-flex flex-column pt-3 mr-6 list"
+        @drop="drop($event, list.listId)"
+        @dragover="allowDrop($event)"
         :key="list.listId"
       >
         <div class="d-flex flex-row justify-space-between">
-          <div>{{ list.list.title }} : {{ list.list.cards.length }}</div>
+          <div style="font-weight: 500">
+            {{ list.list.title }} : {{ list.list.cards.length }}
+          </div>
           <v-icon
             small
             @click="deleteList(list.listId)"
@@ -36,8 +40,9 @@
           class="mt-5 card"
           @click="editCard(card)"
           v-bind:key="card.id"
+          elevation="4"
         >
-          <v-card-text>
+          <v-card-text style="font-weight: 500">
             {{ card.title }}
           </v-card-text>
         </v-card>
@@ -102,8 +107,13 @@
 
       <!--  *****************   Dialog and Button for Status ************************ -->
       <div class="d-flex flex-row">
-        <v-btn depressed @click="dialog = true" class="create-list"
-          >Create new Status</v-btn
+        <v-btn
+          depressed
+          @click="dialog = true"
+          class="create-list"
+          elevation="0"
+          style="opacity: 0.6"
+          >Create new Status !</v-btn
         >
         <v-dialog v-model="dialog" persistent max-width="600px">
           <v-card elevation="0">
@@ -329,6 +339,67 @@ export default {
       //     }
       //   }
       // }
+    },
+    async updateCardList(newlistId) {
+      let that = this;
+      let tempListIndex = -1;
+      let tempCardIndex = -1;
+      let newListIndex = -1;
+      let tempListCount = 0;
+      let tempCardCount = 0;
+
+      //get the index in current cards current list
+      for (const list of that.DATA.lists) {
+        console.log("list.listId:", list.listId, "new list id: ", newlistId);
+
+        if (list.listId === newlistId) {
+          newListIndex = tempListCount;
+          console.log("newListIndex", newListIndex);
+        }
+        if (that.currentCard.listId === list.listId) {
+          //correct list, now find card
+          tempListIndex = tempListCount;
+          for (const card of list.list.cards) {
+            if (card.cardId === that.currentCard.cardId) {
+              tempCardIndex = tempCardCount;
+              break;
+            }
+            tempCardCount++;
+          }
+        }
+        tempListCount++;
+      }
+
+      //remove currentCard from current list
+      console.log("CARDS-BEFORE: ", that.DATA.lists[tempListIndex].list.cards);
+
+      that.DATA.lists[tempListIndex].list.cards.splice(tempCardIndex, 1);
+
+      console.log(
+        "CARDS-AFTER: ",
+        that.DATA.lists[tempListIndex].list.cards,
+        "TEMP CARD IDX:",
+        tempCardIndex,
+        "TEMP LIST IDX: ",
+        tempListIndex
+      );
+
+      //add currentCard to its new list
+      that.currentCard.listId = newlistId;
+      that.DATA.lists[newListIndex].list.cards.push(that.currentCard);
+    },
+
+    allowDrop(ev) {
+      ev.preventDefault();
+    },
+    drag(ev, card) {
+      this.currentCard = card;
+      console.log("current card:", this.currentCard);
+    },
+    drop(ev, listId) {
+      ev.preventDefault();
+      console.log("listId: ", listId);
+      this.updateCardList(listId);
     }
   }
 };
@@ -376,7 +447,6 @@ export default {
   }
   .list {
     width: 250px;
-
     .v-card__text {
       padding: 12px;
     }
