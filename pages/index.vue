@@ -123,16 +123,8 @@
         </v-card>
       </v-dialog>
 
-      <!--  *****************   Dialog and Button for Status ************************ -->
+      <!--  *****************   Button and Dialog for New Status ************************ -->
       <div class="d-flex flex-row">
-        <v-btn
-          depressed
-          @click="dialog = true"
-          class="create-list"
-          elevation="4"
-          style="background-color: #495057; color: white;"
-          >+ New</v-btn
-        >
         <v-dialog v-model="dialog" persistent max-width="600px">
           <v-card elevation="2">
             <v-card-title>
@@ -163,6 +155,16 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <div style="padding-right: 40px">
+          <v-btn
+            depressed
+            @click="dialog = true"
+            class="create-list"
+            elevation="4"
+            style="background-color: #495057; color: white; "
+            >+ New</v-btn
+          >
+        </div>
       </div>
 
       <!-- **************   Dialog For Edit ***************  -->
@@ -427,7 +429,7 @@ export default {
   }
 
   .list {
-    width: 250px;
+    min-width: 250px;
 
     .v-card__text {
       padding: 12px;
