@@ -46,6 +46,7 @@
 .v-main {
   background-color: #adb5bd;
   overflow: scroll;
+  overflow-y: hidden;
   margin-top: 25px;
 }
 </style>
