@@ -1,5 +1,17 @@
 # Task-Universe
-A notion clone
+### A Notion/Trello clone:
+![final-1](https://user-images.githubusercontent.com/18248623/124280860-cd278b00-db66-11eb-9342-9e5d303ccdf7.png)
+
+## Features:
+- Drag and drop tasks/cards from one status to other.
+- Add tasks using "+ New" button under any status.
+- Edit status, description and delete the task.
+- Display count of cards under each status.
+- Option to add a new status using "+ New" button.
+- Data persists on refresh (TODO)
+
+## Demo: 
+https://task-universe-shreyanshtomar.vercel.app/
 
 ## Build Setup
 
